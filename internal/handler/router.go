@@ -26,4 +26,6 @@ func RegisterRoutes(router *http.ServeMux, pool *processor.Pool) {
 	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		HealthCheckHandler(w, r, pool)
 	})
+
+	RegisterProfilingRoutes(router)
 }

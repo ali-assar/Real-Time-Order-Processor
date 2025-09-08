@@ -4,12 +4,17 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"runtime"
 
 	"github.com/ali-assar/Real-Time-Order-Processor.git/internal/handler"
 	"github.com/ali-assar/Real-Time-Order-Processor.git/internal/processor"
 )
 
 func main() {
+
+	// Enable mutex profiling for better analysis
+	runtime.SetMutexProfileFraction(1)
+	runtime.SetBlockProfileRate(1)
 
 	mux := http.NewServeMux()
 	pool := processor.Start(context.Background(), 10, 100)
@@ -36,5 +41,6 @@ func main() {
 	}
 
 	log.Printf("API listening on %s", srv.Addr)
+	log.Printf("Profiling available at http://localhost:8080/debug/pprof/")
 	log.Fatal(srv.ListenAndServe())
 }
